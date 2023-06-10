@@ -1,4 +1,3 @@
-%YPR 1.0
 name: P1
 description: "BooleanLogic: A language that expresses and evaluates boolean logic"
 
@@ -20,17 +19,19 @@ modules:
     description: "Defines the boolean constants true and false."
     language-specific:
       - rust: 
-          - filename: src/constants/constants.rs
-          - struct: Constants
-            - attribute: values
-              - type: array of boolean
-              - description: "An array storing the boolean constants."
+        - filename: src/constants/constants.rs
+        - struct: Constants
+          attribute: 
+            - name: values
+              type: array of boolean
+              description: "An array storing the boolean constants."
       - python: 
-          - filename: constants/constants.py
-          - class: Constants
-            - attribute: values
-              - type: list of boolean
-              - description: "A list storing the boolean constants."
+        - filename: constants/constants.py
+        - class: Constants
+          attribute: 
+            - name: values
+              type: list of boolean
+              description: "A list storing the boolean constants."
 
   - name: operators
     description: "Implements the boolean operators: AND, OR, and NOT."
@@ -49,11 +50,11 @@ modules:
         return: boolean
     language-specific:
       - rust: 
-          - filename: src/operators/operators.rs
-          - struct: Operators
+        - filename: src/operators/operators.rs
+        - struct: Operators
       - python: 
-          - filename: operators/operators.py
-          - class: Operators
+        - filename: operators/operators.py
+        - class: Operators
 
   - name: evaluator
     description: "Evaluates boolean expressions parsed into an internal format."
@@ -65,11 +66,11 @@ modules:
         calls: [parser.parse, operators.and_operator, operators.or_operator, operators.not_operator]
     language-specific:
       - rust: 
-          - filename: src/evaluator/evaluator.rs
-          - struct: Evaluator
+        - filename: src/evaluator/evaluator.rs
+        - struct: Evaluator
       - python: 
-          - filename: evaluator/evaluator.py
-          - class: Evaluator
+        - filename: evaluator/evaluator.py
+        - class: Evaluator
 
   - name: parser
     description: "Parses expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
@@ -80,11 +81,11 @@ modules:
         return: internal_expression
     language-specific:
       - rust: 
-          - filename: src/parser/parser.rs
-          - struct: Parser
+        - filename: src/parser/parser.rs
+        - struct: Parser
       - python: 
-          - filename: parser/parser.py
-          - class: Parser
+        - filename: parser/parser.py
+        - class: Parser
 
   - name: shell
     description: "Interactive shell for entering boolean expressions and getting their evaluated results."
@@ -96,11 +97,11 @@ modules:
         calls: [evaluator.evaluate]
     language-specific:
       - rust: 
-          - filename: src/shell/shell.rs
-          - struct: Shell
+        - filename: src/shell/shell.rs
+        - struct: Shell
       - python: 
-          - filename: shell/shell.py
-          - class: Shell
+        - filename: shell/shell.py
+        - class: Shell
 
 examples:
   - description: "Evaluation of an AND operation where one operand is false."
