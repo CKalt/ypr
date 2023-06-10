@@ -6,14 +6,14 @@ syntax:
   constants: [true, false]
   operators:
     - name: ','
+      description: "Logical AND operator. Returns true if both operands are true."
       arity: 2
-      description: "Logical AND operator. It takes two operands and returns true if both operands are true."
     - name: ';'
+      description: "Logical OR operator. Returns true if either operand is true."
       arity: 2
-      description: "Logical OR operator. It takes two operands and returns true if at least one operand is true."
     - name: '\\+'
+      description: "Logical NOT operator. Returns true if the operand is false, and vice versa."
       arity: 1
-      description: "Logical NOT operator. It takes one operand and returns true if the operand is false."
 
 modules:
   - name: constants
@@ -24,25 +24,27 @@ modules:
           - struct: Constants
             - attribute: values
               - type: array of boolean
+              - description: "An array storing the boolean constants."
       - python: 
           - filename: constants/constants.py
           - class: Constants
             - attribute: values
               - type: list of boolean
+              - description: "A list storing the boolean constants."
 
   - name: operators
-    description: "Implements the boolean operators AND, OR, and NOT."
+    description: "Implements the boolean operators: AND, OR, and NOT."
     functions:
       - name: and_operator
-        description: "Implements the logical AND operation."
+        description: "Takes two boolean operands and returns their logical AND."
         parameters: [operand1: boolean, operand2: boolean]
         return: boolean
       - name: or_operator
-        description: "Implements the logical OR operation."
+        description: "Takes two boolean operands and returns their logical OR."
         parameters: [operand1: boolean, operand2: boolean]
         return: boolean
       - name: not_operator
-        description: "Implements the logical NOT operation."
+        description: "Takes one boolean operand and returns its logical NOT."
         parameters: [operand: boolean]
         return: boolean
     language-specific:
@@ -54,10 +56,10 @@ modules:
           - class: Operators
 
   - name: evaluator
-    description: "Evaluates boolean expressions using the defined operators and constants."
+    description: "Evaluates boolean expressions parsed into an internal format."
     functions:
       - name: evaluate
-        description: "Parses and evaluates a given boolean expression."
+        description: "Takes an internal expression and evaluates it."
         parameters: [expression: string]
         return: boolean
         calls: [parser.parse, operators.and_operator, operators.or_operator, operators.not_operator]
@@ -70,10 +72,10 @@ modules:
           - class: Evaluator
 
   - name: parser
-    description: "Parses expressions into an internal format for evaluation."
+    description: "Parses expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
     functions:
       - name: parse
-        description: "Converts a given boolean expression into an internal format for evaluation."
+        description: "Takes an expression as a string and parses it into an internal format."
         parameters: [expression: string]
         return: internal_expression
     language-specific:
@@ -85,10 +87,10 @@ modules:
           - class: Parser
 
   - name: shell
-    description: "Interactive shell for entering and evaluating boolean expressions."
+    description: "Interactive shell for entering boolean expressions and getting their evaluated results."
     functions:
       - name: start_shell
-        description: "Starts the interactive shell for the P1 language."
+        description: "Initializes and starts the interactive shell. No parameters or return values."
         parameters: []
         return: None
         calls: [evaluator.evaluate]
@@ -101,24 +103,24 @@ modules:
           - class: Shell
 
 examples:
-  - description: "Example of logical AND operation where both operands are true."
-    expression: ',(true, true)'
-    result: true
-  - description: "Example of logical OR operation where one operand is true."
+  - description: "Evaluation of an AND operation where one operand is false."
+    expression: ',(true, false)'
+    result: false
+  - description: "Evaluation of an OR operation where one operand is true."
     expression: ';(true, false)'
     result: true
-  - description: "Example of logical NOT operation on a true operand."
+  - description: "Evaluation of a NOT operation on a true operand."
     expression: '\\+(true)'
     result: false
 
 tests:
-  - description: "Test for logical AND operation where both operands are true."
-    query: ',(true, true).'
-    expected: true
-  - description: "Test for logical OR operation where one operand is true."
+  - description: "Test of an AND operation where one operand is false."
+    query: ',(true, false).'
+    expected: false
+  - description: "Test of an OR operation where one operand is true."
     query: ';(true, false).'
     expected: true
-  - description: "Test for logical NOT operation on a true operand."
+  - description: "Test of a NOT operation on a true operand."
     query: '\\+(true).'
     expected: false
 
@@ -127,7 +129,7 @@ shell: |
   Enter your Prolog queries or use built-in commands:
   - Type 'exit.' to quit the shell.
   - Type 'consult("<filename>").' to load a file with P1 facts.
- 
+
   ?- ';(true, false).'
   Result: true
 
