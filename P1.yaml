@@ -7,14 +7,17 @@ syntax:
   operators:
     - name: ','
       arity: 2
+      description: "Logical AND operator. It takes two operands and returns true if both operands are true."
     - name: ';'
       arity: 2
+      description: "Logical OR operator. It takes two operands and returns true if at least one operand is true."
     - name: '\\+'
       arity: 1
+      description: "Logical NOT operator. It takes one operand and returns true if the operand is false."
 
 modules:
   - name: constants
-    description: "Defines the boolean constants"
+    description: "Defines the boolean constants true and false."
     language-specific:
       - rust: 
           - filename: src/constants/constants.rs
@@ -28,15 +31,18 @@ modules:
               - type: list of boolean
 
   - name: operators
-    description: "Implements the boolean operators"
+    description: "Implements the boolean operators AND, OR, and NOT."
     functions:
       - name: and_operator
+        description: "Implements the logical AND operation."
         parameters: [operand1: boolean, operand2: boolean]
         return: boolean
       - name: or_operator
+        description: "Implements the logical OR operation."
         parameters: [operand1: boolean, operand2: boolean]
         return: boolean
       - name: not_operator
+        description: "Implements the logical NOT operation."
         parameters: [operand: boolean]
         return: boolean
     language-specific:
@@ -48,9 +54,10 @@ modules:
           - class: Operators
 
   - name: evaluator
-    description: "Evaluates boolean expressions"
+    description: "Evaluates boolean expressions using the defined operators and constants."
     functions:
       - name: evaluate
+        description: "Parses and evaluates a given boolean expression."
         parameters: [expression: string]
         return: boolean
         calls: [parser.parse, operators.and_operator, operators.or_operator, operators.not_operator]
@@ -63,9 +70,10 @@ modules:
           - class: Evaluator
 
   - name: parser
-    description: "Parses expressions into an internal format for evaluation"
+    description: "Parses expressions into an internal format for evaluation."
     functions:
       - name: parse
+        description: "Converts a given boolean expression into an internal format for evaluation."
         parameters: [expression: string]
         return: internal_expression
     language-specific:
@@ -77,9 +85,10 @@ modules:
           - class: Parser
 
   - name: shell
-    description: "Interactive shell for entering boolean expressions"
+    description: "Interactive shell for entering and evaluating boolean expressions."
     functions:
       - name: start_shell
+        description: "Starts the interactive shell for the P1 language."
         parameters: []
         return: None
         calls: [evaluator.evaluate]
@@ -92,19 +101,25 @@ modules:
           - class: Shell
 
 examples:
-  - expression: ',(true, false)'
-    result: false
-  - expression: ';(true, false)'
+  - description: "Example of logical AND operation where both operands are true."
+    expression: ',(true, true)'
     result: true
-  - expression: '\\+(true)'
+  - description: "Example of logical OR operation where one operand is true."
+    expression: ';(true, false)'
+    result: true
+  - description: "Example of logical NOT operation on a true operand."
+    expression: '\\+(true)'
     result: false
 
 tests:
-  - query: ',(true, false).'
-    expected: false
-  - query: ';(true, false).'
+  - description: "Test for logical AND operation where both operands are true."
+    query: ',(true, true).'
     expected: true
-  - query: '\\+(true).'
+  - description: "Test for logical OR operation where one operand is true."
+    query: ';(true, false).'
+    expected: true
+  - description: "Test for logical NOT operation on a true operand."
+    query: '\\+(true).'
     expected: false
 
 shell: |
