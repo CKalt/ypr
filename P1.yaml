@@ -12,6 +12,85 @@ syntax:
     - name: '\\+'
       arity: 1
 
+modules:
+  - name: constants
+    description: "Defines the boolean constants"
+    language-specific:
+      - rust: 
+          - filename: src/constants/constants.rs
+          - struct: Constants
+            - attribute: values
+              - type: array of boolean
+      - python: 
+          - filename: constants/constants.py
+          - class: Constants
+            - attribute: values
+              - type: list of boolean
+
+  - name: operators
+    description: "Implements the boolean operators"
+    functions:
+      - name: and_operator
+        parameters: [operand1: boolean, operand2: boolean]
+        return: boolean
+      - name: or_operator
+        parameters: [operand1: boolean, operand2: boolean]
+        return: boolean
+      - name: not_operator
+        parameters: [operand: boolean]
+        return: boolean
+    language-specific:
+      - rust: 
+          - filename: src/operators/operators.rs
+          - struct: Operators
+      - python: 
+          - filename: operators/operators.py
+          - class: Operators
+
+  - name: evaluator
+    description: "Evaluates boolean expressions"
+    functions:
+      - name: evaluate
+        parameters: [expression: string]
+        return: boolean
+        calls: [parser.parse, operators.and_operator, operators.or_operator, operators.not_operator]
+    language-specific:
+      - rust: 
+          - filename: src/evaluator/evaluator.rs
+          - struct: Evaluator
+      - python: 
+          - filename: evaluator/evaluator.py
+          - class: Evaluator
+
+  - name: parser
+    description: "Parses expressions into an internal format for evaluation"
+    functions:
+      - name: parse
+        parameters: [expression: string]
+        return: internal_expression
+    language-specific:
+      - rust: 
+          - filename: src/parser/parser.rs
+          - struct: Parser
+      - python: 
+          - filename: parser/parser.py
+          - class: Parser
+
+  - name: shell
+    description: "Interactive shell for entering boolean expressions"
+    functions:
+      - name: start_shell
+        parameters: []
+        return: None
+        calls: [evaluator.evaluate]
+    language-specific:
+      - rust: 
+          - filename: src/shell/shell.rs
+          - struct: Shell
+      - python: 
+          - filename: shell/shell.py
+          - class: Shell
+
 examples:
   - expression: ',(true, false)'
     result: false
@@ -27,3 +106,18 @@ tests:
     expected: true
   - query: '\\+(true).'
     expected: false
+
+shell: |
+  Prolog Lite - P1 Shell
+  Enter your Prolog queries or use built-in commands:
+  - Type 'exit.' to quit the shell.
+  - Type 'consult("<filename>").' to load a file with P1 facts.
+ 
+  ?- ';(true, false).'
+  Result: true
+
+  ?- '\\+(true).'
+  Result: false
+
+  ?- exit.
+  Exiting Prolog Lite - P1 Shell
