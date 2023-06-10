@@ -1,0 +1,29 @@
+%YPR 1.0
+name: P1
+description: "BooleanLogic: A language that expresses and evaluates boolean logic"
+
+syntax:
+  constants: [true, false]
+  operators:
+    - name: ','
+      arity: 2
+    - name: ';'
+      arity: 2
+    - name: '\\+'
+      arity: 1
+
+examples:
+  - expression: ',(true, false)'
+    result: false
+  - expression: ';(true, false)'
+    result: true
+  - expression: '\\+(true)'
+    result: false
+
+tests:
+  - query: ',(true, false).'
+    expected: false
+  - query: ';(true, false).'
+    expected: true
+  - query: '\\+(true).'
+    expected: false

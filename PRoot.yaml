@@ -1,0 +1,87 @@
+%YPR 1.0
+name: PRoot
+description: Root document for defining the Prolog Lite stages
+
+stages:
+  - name: P1
+    description: "BooleanLogic: A language that expresses and evaluates boolean logic"
+    features:
+      - Constants
+      - Operators: [",", ";", "\\+"]
+    enhancements:
+      - Basic parsing and evaluation
+    shell: |
+      Prolog Lite - P1 Shell
+      Enter your Prolog queries or use built-in commands:
+      - Type 'exit.' to quit the shell.
+      - Type 'consult("<filename>").' to load a file with P1 facts.
+
+  - name: P2
+    description: "PropositionalLogic: An extension of BooleanLogic to include variables"
+    features:
+      - Variables
+    enhancements:
+      - Introduction of environment or variable assignment
+
+  - name: P3
+    description: "PredicateLogic: Extends PropositionalLogic to include predicates and quantifiers"
+    features:
+      - Predicates
+      - Quantifiers
+    enhancements:
+      - Variable scoping
+
+  - name: P4
+    description: "FirstOrderLogic: Builds upon PredicateLogic to include functions"
+    features:
+      - Functions
+    enhancements:
+      - Transition from propositional to first-order logic
+
+  - name: P5
+    description: "HornClausalLogic: Extends FirstOrderLogic to restrict it to Horn clauses"
+    features:
+      - Horn clauses
+    enhancements:
+      - Crucial for Prolog's computational model
+
+  - name: P6
+    description: "SimpleProlog: Extends HornClausalLogic to include the basic features of Prolog"
+    features:
+      - Facts
+      - Rules
+      - Queries
+    enhancements:
+      - Introduction of execution model for query satisfaction
+
+  - name: P7
+    description: "PrologWithBacktracking: Enhances SimpleProlog with support for backtracking"
+    features:
+      - Backtracking
+    enhancements:
+      - Quintessential feature of Prolog's execution model
+
+  - name: P8
+    description: "PrologWithBuiltinPredicates: Builds upon PrologWithBacktracking by adding support for built-in predicates"
+    features:
+      - Built-in predicates (arithmetic operations, list operations, I/O operations, etc.)
+    enhancements:
+      - Expanded functionality through built-in predicates
+
+  - name: P9
+    description: "PrologWithCut: Extends PrologWithBuiltinPredicates with support for the cut operator"
+    features:
+      - Cut operator
+    enhancements:
+      - Influences the backtracking mechanism
+
+  - name: Pn
+    description: "FullProlog: The final stage that incorporates all remaining features of the Prolog standard"
+    features:
+      - Modules
+      - Operator definitions
+      - Exceptions
+      # Add more features as needed
+    enhancements:
+      - Complete implementation of the Prolog standard
+
