@@ -25,134 +25,139 @@ structure:
         - operators.py
         - evaluator.py
         - parser.py
-        - interactive.py
+        - shell.py
 
 syntax:
   constants: [true, false]
   operators:
-    - name: ','
+    ',':
       description: "Logical AND operator. Returns true if both operands are true."
       arity: 2
-    - name: ';'
+    ';':
       description: "Logical OR operator. Returns true if either operand is true."
       arity: 2
-    - name: '\\+'
+    '\\+':
       description: "Logical NOT operator. Returns true if the operand is false, and vice versa."
       arity: 1
 
 modules:
-  - name: constants
+  constants:
     description: "Defines the boolean constants true and false."
     ydl: ydl/constants.ydl
     language-specific:
-      - rust: 
-        - filename: rust/src/constants.rs
-        - struct: Constants
-          attribute: 
-            - name: values
+      rust: 
+        'rust/src/constants.rs':
+          struct: Constants
+          attributes: 
+            values:
               type: array of boolean
               description: "An array storing the boolean constants."
-      - python: 
-        - filename: python/src/constants.py
-        - class: Constants
-          attribute: 
-            - name: values
+      python: 
+        'python/src/constants.py':
+          class: Constants
+          attributes: 
+            values:
               type: list of boolean
               description: "A list storing the boolean constants."
 
-  - name: operators
+  operators:
     description: "Implements the boolean operators: AND, OR, and NOT."
     ydl: ydl/operators.ydl
     functions:
-      - name: and_operator
+      and_operator:
         description: "Takes two boolean operands and returns their logical AND."
-        parameters: [operand1: boolean, operand2: boolean]
+        parameters: {operand1: boolean, operand2: boolean}
         return: boolean
-      - name: or_operator
+      or_operator:
         description: "Takes two boolean operands and returns their logical OR."
-        parameters: [operand1: boolean, operand2: boolean]
+        parameters: {operand1: boolean, operand2: boolean}
         return: boolean
-      - name: not_operator
+      not_operator:
         description: "Takes one boolean operand and returns its logical NOT."
-        parameters: [operand: boolean]
+        parameters: {operand: boolean}
         return: boolean
     language-specific:
-      - rust: 
-        - filename: rust/src/operators.rs
-        - struct: Operators
-      - python: 
-        - filename: python/src/operators.py
-        - class: Operators
+      rust: 
+        'rust/src/operators.rs':
+            struct: Operators
+      python: 
+        'python/src/operators.py':
+            class: Operators
 
-  - name: evaluator
+  evaluator:
     description: "Evaluates boolean expressions parsed into an internal format."
     ydl: ydl/evaluator.ydl
     functions:
-      - name: evaluate
+      evaluate:
         description: "Takes an internal expression and evaluates it."
-        parameters: [expression: string]
+        parameters: {expression: string}
         return: boolean
         calls: [parser.parse, operators.and_operator, operators.or_operator, operators.not_operator]
     language-specific:
-      - rust: 
-        - filename: rust/src/evaluator.rs
-        - struct: Evaluator
-      - python: 
-        - filename: python/src/evaluator.py
-        - class: Evaluator
-
-  - name: parser
+      rust: 
+        'rust/src/evaluator.rs':
+          struct: Evaluator
+      python: 
+        'python/src/evaluator.py':
+          class: Evaluator
+  parser:
     description: "Parses expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
     ydl: ydl/parser.ydl
     functions:
-      - name: parse
+      parse:
         description: "Takes an expression as a string and parses it into an internal format."
-        parameters: [expression: string]
+        parameters: {expression: string}
         return: internal_expression
     language-specific:
-      - rust: 
-        - filename: rust/src/parser.rs
-        - struct: Parser
-      - python: 
-        - filename: python/src/parser.py
-        - class: Parser
+      rust: 
+        'rust/src/parser.rs':
+          struct: Parser
+      python: 
+        'python/src/parser.py':
+          class: Parser
 
-  - name: shell
+  shell:
     description: "Interactive shell for entering boolean expressions and getting their evaluated results."
     ydl: ydl/shell.ydl
     functions:
-      - name: start_shell
+      start_shell:
         description: "Initializes and starts the interactive shell. No parameters or return values."
         parameters: []
         return: None
         calls: [evaluator.evaluate]
     language-specific:
-      - rust: 
-        - filename: rust/src/shell.rs
-        - struct: Interactive
-      - python: 
-        - filename: python/src/shell.py
-        - class: Interactive
+      rust: 
+        'rust/src/shell.rs':
+          struct: Interactive
+      python: 
+        'python/src/shell.py':
+          class: Interactive
 
 examples:
-  - description: "Evaluation of an AND operation where one operand is false."
+  example1: 
+    description: "Evaluation of an AND operation where one operand is false."
     expression: ',(true, false)'
     result: false
-  - description: "Evaluation of an OR operation where one operand is true."
+  example2:
+    description: "Evaluation of an OR operation where one operand is true."
     expression: ';(true, false)'
     result: true
-  - description: "Evaluation of a NOT operation on a true operand."
+  example3:
+    description: "Evaluation of a NOT operation on a true operand."
     expression: '\\+(true)'
     result: false
 
 tests:
-  - description: "Test of an AND operation where one operand is false."
+  test1:
+    description: "Test of an AND operation where one operand is false."
     query: ',(true, false).'
     expected: false
-  - description: "Test of an OR operation where one operand is true."
+  test2:
+    description: "Test of an OR operation where one operand is true."
     query: ';(true, false).'
     expected: true
-  - description: "Test of a NOT operation on a true operand."
+  test3:
+    description: "Test of a NOT operation on a true operand."
     query: '\\+(true).'
     expected: false
 
@@ -162,14 +167,4 @@ interactive_examples:
     content: |
   Prolog Lite - P1 Shell
   Enter your Prolog queries or use built-in commands:
-  - Type 'exit.' to quit the shell.
-  - Type 'consult("<filename>").' to load a file with P1 facts.
-
-  ?- ';(true, false).'
-  Result: true
-
-  ?- '\\+(true).'
-  Result: false
-
-  ?- exit.
-  Exiting Prolog Lite - P1 Shell
+  - Type
