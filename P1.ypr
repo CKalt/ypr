@@ -1,6 +1,32 @@
 name: P1
 description: "BooleanLogic: A language that expresses and evaluates boolean logic"
 
+structure:
+  P1:
+    - P1.ypr
+    ydl:
+      - constants.ydl
+      - operators.ydl
+      - evaluator.ydl
+      - parser.ydl
+      - interactive.ydl
+    rust:
+      - Cargo.toml
+      src:
+        - constants.rs
+        - operators.rs
+        - evaluator.rs
+        - parser.rs
+        - interactive.rs
+    python:
+      - setup.py
+      src:
+        - constants.py
+        - operators.py
+        - evaluator.py
+        - parser.py
+        - interactive.py
+
 syntax:
   constants: [true, false]
   operators:
@@ -17,16 +43,17 @@ syntax:
 modules:
   - name: constants
     description: "Defines the boolean constants true and false."
+    ydl: ydl/constants.ydl
     language-specific:
       - rust: 
-        - filename: src/constants/constants.rs
+        - filename: rust/src/constants.rs
         - struct: Constants
           attribute: 
             - name: values
               type: array of boolean
               description: "An array storing the boolean constants."
       - python: 
-        - filename: constants/constants.py
+        - filename: python/src/constants.py
         - class: Constants
           attribute: 
             - name: values
@@ -35,6 +62,7 @@ modules:
 
   - name: operators
     description: "Implements the boolean operators: AND, OR, and NOT."
+    ydl: ydl/operators.ydl
     functions:
       - name: and_operator
         description: "Takes two boolean operands and returns their logical AND."
@@ -50,14 +78,15 @@ modules:
         return: boolean
     language-specific:
       - rust: 
-        - filename: src/operators/operators.rs
+        - filename: rust/src/operators.rs
         - struct: Operators
       - python: 
-        - filename: operators/operators.py
+        - filename: python/src/operators.py
         - class: Operators
 
   - name: evaluator
     description: "Evaluates boolean expressions parsed into an internal format."
+    ydl: ydl/evaluator.ydl
     functions:
       - name: evaluate
         description: "Takes an internal expression and evaluates it."
@@ -66,14 +95,15 @@ modules:
         calls: [parser.parse, operators.and_operator, operators.or_operator, operators.not_operator]
     language-specific:
       - rust: 
-        - filename: src/evaluator/evaluator.rs
+        - filename: rust/src/evaluator.rs
         - struct: Evaluator
       - python: 
-        - filename: evaluator/evaluator.py
+        - filename: python/src/evaluator.py
         - class: Evaluator
 
   - name: parser
     description: "Parses expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
+    ydl: ydl/parser.ydl
     functions:
       - name: parse
         description: "Takes an expression as a string and parses it into an internal format."
@@ -81,14 +111,15 @@ modules:
         return: internal_expression
     language-specific:
       - rust: 
-        - filename: src/parser/parser.rs
+        - filename: rust/src/parser.rs
         - struct: Parser
       - python: 
-        - filename: parser/parser.py
+        - filename: python/src/parser.py
         - class: Parser
 
   - name: shell
     description: "Interactive shell for entering boolean expressions and getting their evaluated results."
+    ydl: ydl/shell.ydl
     functions:
       - name: start_shell
         description: "Initializes and starts the interactive shell. No parameters or return values."
@@ -97,11 +128,11 @@ modules:
         calls: [evaluator.evaluate]
     language-specific:
       - rust: 
-        - filename: src/shell/shell.rs
-        - struct: Shell
+        - filename: rust/src/shell.rs
+        - struct: Interactive
       - python: 
-        - filename: shell/shell.py
-        - class: Shell
+        - filename: python/src/shell.py
+        - class: Interactive
 
 examples:
   - description: "Evaluation of an AND operation where one operand is false."
@@ -125,7 +156,10 @@ tests:
     query: '\\+(true).'
     expected: false
 
-shell: |
+interactive_examples:
+  Basic Operations:
+    module: shell
+    content: |
   Prolog Lite - P1 Shell
   Enter your Prolog queries or use built-in commands:
   - Type 'exit.' to quit the shell.
