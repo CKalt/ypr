@@ -1,7 +1,8 @@
-Please read the following 3 documents, then I wish to discuss an exerpiment where we create a shell.ydl and experiment with a DSL
-that can be used to abstract the things that the code generator can create python and eventually rust code by using it.
+Please read the following 4 documents to understand the context of my request.
+I would like to add the notion of import and export between modules.  In both the *.ydl and Px.ypr files I wish the each module entity (e.g. functions) where there may be foreign references to other modules, I wish  for that foreign entity to show up in a nested object called imports: with a key value pair whereby each key is the module and the value being an array of all entities that must be imported. Conversly each such entity, (function etc.) must have an exported: true property added.
 
---------
+-------------------
+
 YPR – Yaml, Python, Rust compiler development framework.
 The YPR framework is designed to deliver a robust implementation of the Prolog language through a unique approach that combines three programming languages: Python, Rust, and YAML, along with a domain-specific language (DSL). At the top of the framework sits YAML, which defines and monitors the entire project and its architecture, including directory structures, module names, functions, and their interactions.
 
@@ -15,6 +16,8 @@ A key aspect of the YPR framework is the 100% syntax and semantic compatibility 
 
 In summary, the YPR framework combines YAML, Python, and Rust to develop a Prolog implementation, leveraging a DSL for expressive project definitions that can be used to generate source code. The framework ensures syntax and semantic compatibility, provides language references, and facilitates iterative development through a sequence of Prolog-lite stages. While the YPR framework has evolved to incorporate a DSL, YAML remains a primary tool for high-level project orchestration.
 ---------
+PRoot.ypr
+
 name: PRoot
 description: Root document for defining the Prolog Lite stages
 
@@ -102,6 +105,9 @@ stages:
       - Complete implementation of the Prolog standard
 
 ---------
+P1.ypr
+
+
 name: P1
 description: "BooleanLogic: A language that expresses and evaluates boolean logic"
 
@@ -272,3 +278,62 @@ interactive_examples:
   Prolog Lite - P1 Shell
   Enter your Prolog queries or use built-in commands:
   - Type
+--------
+shell.ydl
+
+name: shell
+description: "Interactive shell for entering boolean expressions and getting their evaluated results."
+
+attributes: 
+  prompt:
+    description: "Prompt string displayed for user input."
+    value: "Prolog Lite - P1 Shell > "
+  exit_command:
+    description: "Command string to exit the shell."
+    value: 'exit.'
+
+functions:
+  start_shell:
+    description: "Initializes and starts the interactive shell. No parameters or return values."
+    parameters: []
+    return: None
+    calls: []
+    body: |
+      Initialize the shell.
+      While user_input != exit_command:
+          Display the prompt.
+          Read user_input.
+          If user_input is an expression:
+              ParsedExpression = parser.parse(user_input)
+              EvaluatedResult = evaluator.evaluate(ParsedExpression)
+              Display the EvaluatedResult.
+          Else if user_input is a command:
+              Execute the command.
+          Else:
+              Display an error message: "Invalid input. Please enter a boolean expression or a command."
+  load_file:
+    description: "Loads a file with P1 facts."
+    parameters: 
+      filename: 
+        type: string
+        description: "Name of the file to load."
+    return: None
+    calls:
+      - parser.parse
+      - evaluator.evaluate
+    body: |
+      Read the file.
+      For each line in the file:
+          If line is an expression:
+              ParsedLine = parser.parse(line)
+              EvaluatedLine = evaluator.evaluate(ParsedLine)
+          Else if line is a command:
+              Execute the command.
+          Else:
+              Display an error message: "Invalid line in file. Line must be a boolean expression or a command."
+              
+commands: 
+  consult:
+    description: "Loads a file with P1 facts."
+    usage: 'consult("<filename>").'
+    function: load_file
