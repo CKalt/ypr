@@ -9,7 +9,7 @@ structure:
       - operators.ydl
       - evaluator.ydl
       - parser.ydl
-      - interactive.ydl
+      - shell.ydl
     rust:
       - Cargo.toml
       src:
@@ -17,7 +17,7 @@ structure:
         - operators.rs
         - evaluator.rs
         - parser.rs
-        - interactive.rs
+        - shell.rs
     python:
       - setup.py
       src:

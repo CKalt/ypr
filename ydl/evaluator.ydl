@@ -1,0 +1,23 @@
+name: evaluator
+description: "Evaluates boolean expressions parsed into an internal format by the parser module."
+
+functions:
+  evaluate:
+    description: "Takes an internal expression and evaluates it to return a boolean value."
+    parameters: 
+      internal_expression: 
+        type: internal_expression
+        description: "An expression in the internal format, as output by the parser module."
+    return: 
+      type: boolean
+      description: "The result of the evaluated boolean expression."
+    body: |
+      For each tuple in the internal expression:
+          If the operator is AND:
+              result = operators.and_operator(tuple.operand1, tuple.operand2)
+          Else if the operator is OR:
+              result = operators.or_operator(tuple.operand1, tuple.operand2)
+          Else if the operator is NOT:
+              result = operators.not_operator(tuple.operand)
+          Replace the tuple in the internal expression with the result.
+      Return the final evaluated result.

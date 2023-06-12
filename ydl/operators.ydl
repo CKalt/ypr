@@ -1,0 +1,41 @@
+name: operators
+description: "Defines the boolean operators: AND, OR, NOT."
+
+operators:
+  ',': 
+    description: "Logical AND operator. Returns true if both operands are true."
+    arity: 2
+    function: 
+      name: and_operator
+      description: "Takes two boolean operands and returns their logical AND."
+      parameters: 
+        operand1: boolean
+        operand2: boolean
+      return: 
+        type: boolean
+        description: "Result of the AND operation."
+  
+  ';': 
+    description: "Logical OR operator. Returns true if either operand is true."
+    arity: 2
+    function: 
+      name: or_operator
+      description: "Takes two boolean operands and returns their logical OR."
+      parameters: 
+        operand1: boolean
+        operand2: boolean
+      return: 
+        type: boolean
+        description: "Result of the OR operation."
+
+  '\\+': 
+    description: "Logical NOT operator. Returns true if the operand is false, and vice versa."
+    arity: 1
+    function: 
+      name: not_operator
+      description: "Takes one boolean operand and returns its logical NOT."
+      parameters: 
+        operand: boolean
+      return: 
+        type: boolean
+        description: "Result of the NOT operation."

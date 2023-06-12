@@ -1,0 +1,274 @@
+Please read the following 3 documents, then I wish to discuss an exerpiment where we create a shell.ydl and experiment with a DSL
+that can be used to abstract the things that the code generator can create python and eventually rust code by using it.
+
+--------
+YPR – Yaml, Python, Rust compiler development framework.
+The YPR framework is designed to deliver a robust implementation of the Prolog language through a unique approach that combines three programming languages: Python, Rust, and YAML, along with a domain-specific language (DSL). At the top of the framework sits YAML, which defines and monitors the entire project and its architecture, including directory structures, module names, functions, and their interactions.
+
+The project's components and their interactions are described in a DSL, which allows for a more expressive and succinct definition than YAML alone. This DSL not only improves the readability and maintainability of the project descriptions but also facilitates the automatic generation of Python and Rust source code, bridging the gap between high-level project definitions and the actual code that implements them.
+
+The Prolog system is developed in stages, represented as "Prolog Lite" languages (P1, P2, ..., Px, ..., Pn), each progressively increasing in complexity and functionality. Python and Rust independently implement functionally equivalent units for each stage of the Prolog-lite sequence, with the DSL serving as a blueprint. The DSL definitions for each module reside in their respective YAML documents, making them easy to manage and update.
+
+The YAML structure within the YPR framework includes Yx instances for each stage (Px), capturing the necessary information for generating language references. Additionally, there is a YRoot document that provides an overview of the P1...Pn series and their relationships, facilitating iterative development and refinement.
+
+A key aspect of the YPR framework is the 100% syntax and semantic compatibility between each stage (Px) and the ultimate version (Pn) of the Prolog system. This property, known as the "Px Compatibility Rule," is crucial. It allows us to assert that a specific stage (Px) is incorrect if it fails to pass the Px Compatibility Rule, indicating that its code does not run in all higher-level stages.
+
+In summary, the YPR framework combines YAML, Python, and Rust to develop a Prolog implementation, leveraging a DSL for expressive project definitions that can be used to generate source code. The framework ensures syntax and semantic compatibility, provides language references, and facilitates iterative development through a sequence of Prolog-lite stages. While the YPR framework has evolved to incorporate a DSL, YAML remains a primary tool for high-level project orchestration.
+---------
+name: PRoot
+description: Root document for defining the Prolog Lite stages
+
+stages:
+  - name: P1
+    description: "BooleanLogic: A language that expresses and evaluates boolean logic"
+    features:
+      - Constants
+      - Operators: [",", ";", "\\+"]
+    enhancements:
+      - Basic parsing and evaluation
+    shell: |
+      Prolog Lite - P1 Shell
+      Enter your Prolog queries or use built-in commands:
+      - Type 'exit.' to quit the shell.
+      - Type 'consult("<filename>").' to load a file with P1 facts.
+
+  - name: P2
+    description: "PropositionalLogic: An extension of BooleanLogic to include variables"
+    features:
+      - Variables
+    enhancements:
+      - Introduction of environment or variable assignment
+
+  - name: P3
+    description: "PredicateLogic: Extends PropositionalLogic to include predicates and quantifiers"
+    features:
+      - Predicates
+      - Quantifiers
+    enhancements:
+      - Variable scoping
+
+  - name: P4
+    description: "FirstOrderLogic: Builds upon PredicateLogic to include functions"
+    features:
+      - Functions
+    enhancements:
+      - Transition from propositional to first-order logic
+
+  - name: P5
+    description: "HornClausalLogic: Extends FirstOrderLogic to restrict it to Horn clauses"
+    features:
+      - Horn clauses
+    enhancements:
+      - Crucial for Prolog's computational model
+
+  - name: P6
+    description: "SimpleProlog: Extends HornClausalLogic to include the basic features of Prolog"
+    features:
+      - Facts
+      - Rules
+      - Queries
+    enhancements:
+      - Introduction of execution model for query satisfaction
+
+  - name: P7
+    description: "PrologWithBacktracking: Enhances SimpleProlog with support for backtracking"
+    features:
+      - Backtracking
+    enhancements:
+      - Quintessential feature of Prolog's execution model
+
+  - name: P8
+    description: "PrologWithBuiltinPredicates: Builds upon PrologWithBacktracking by adding support for built-in predicates"
+    features:
+      - Built-in predicates (arithmetic operations, list operations, I/O operations, etc.)
+    enhancements:
+      - Expanded functionality through built-in predicates
+
+  - name: P9
+    description: "PrologWithCut: Extends PrologWithBuiltinPredicates with support for the cut operator"
+    features:
+      - Cut operator
+    enhancements:
+      - Influences the backtracking mechanism
+
+  - name: Pn
+    description: "FullProlog: The final stage that incorporates all remaining features of the Prolog standard"
+    features:
+      - Modules
+      - Operator definitions
+      - Exceptions
+      # Add more features as needed
+    enhancements:
+      - Complete implementation of the Prolog standard
+
+---------
+name: P1
+description: "BooleanLogic: A language that expresses and evaluates boolean logic"
+
+structure:
+  P1:
+    - P1.ypr
+    ydl:
+      - constants.ydl
+      - operators.ydl
+      - evaluator.ydl
+      - parser.ydl
+      - shell.ydl
+    rust:
+      - Cargo.toml
+      src:
+        - constants.rs
+        - operators.rs
+        - evaluator.rs
+        - parser.rs
+        - shell.rs
+    python:
+      - setup.py
+      src:
+        - constants.py
+        - operators.py
+        - evaluator.py
+        - parser.py
+        - shell.py
+
+syntax:
+  constants: [true, false]
+  operators:
+    ',':
+      description: "Logical AND operator. Returns true if both operands are true."
+      arity: 2
+    ';':
+      description: "Logical OR operator. Returns true if either operand is true."
+      arity: 2
+    '\\+':
+      description: "Logical NOT operator. Returns true if the operand is false, and vice versa."
+      arity: 1
+
+modules:
+  constants:
+    description: "Defines the boolean constants true and false."
+    ydl: ydl/constants.ydl
+    language-specific:
+      rust: 
+        'rust/src/constants.rs':
+          struct: Constants
+          attributes: 
+            values:
+              type: array of boolean
+              description: "An array storing the boolean constants."
+      python: 
+        'python/src/constants.py':
+          class: Constants
+          attributes: 
+            values:
+              type: list of boolean
+              description: "A list storing the boolean constants."
+
+  operators:
+    description: "Implements the boolean operators: AND, OR, and NOT."
+    ydl: ydl/operators.ydl
+    functions:
+      and_operator:
+        description: "Takes two boolean operands and returns their logical AND."
+        parameters: {operand1: boolean, operand2: boolean}
+        return: boolean
+      or_operator:
+        description: "Takes two boolean operands and returns their logical OR."
+        parameters: {operand1: boolean, operand2: boolean}
+        return: boolean
+      not_operator:
+        description: "Takes one boolean operand and returns its logical NOT."
+        parameters: {operand: boolean}
+        return: boolean
+    language-specific:
+      rust: 
+        'rust/src/operators.rs':
+            struct: Operators
+      python: 
+        'python/src/operators.py':
+            class: Operators
+
+  evaluator:
+    description: "Evaluates boolean expressions parsed into an internal format."
+    ydl: ydl/evaluator.ydl
+    functions:
+      evaluate:
+        description: "Takes an internal expression and evaluates it."
+        parameters: {expression: string}
+        return: boolean
+        calls: [parser.parse, operators.and_operator, operators.or_operator, operators.not_operator]
+    language-specific:
+      rust: 
+        'rust/src/evaluator.rs':
+          struct: Evaluator
+      python: 
+        'python/src/evaluator.py':
+          class: Evaluator
+  parser:
+    description: "Parses expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
+    ydl: ydl/parser.ydl
+    functions:
+      parse:
+        description: "Takes an expression as a string and parses it into an internal format."
+        parameters: {expression: string}
+        return: internal_expression
+    language-specific:
+      rust: 
+        'rust/src/parser.rs':
+          struct: Parser
+      python: 
+        'python/src/parser.py':
+          class: Parser
+
+  shell:
+    description: "Interactive shell for entering boolean expressions and getting their evaluated results."
+    ydl: ydl/shell.ydl
+    functions:
+      start_shell:
+        description: "Initializes and starts the interactive shell. No parameters or return values."
+        parameters: []
+        return: None
+        calls: [evaluator.evaluate]
+    language-specific:
+      rust: 
+        'rust/src/shell.rs':
+          struct: Interactive
+      python: 
+        'python/src/shell.py':
+          class: Interactive
+
+examples:
+  example1: 
+    description: "Evaluation of an AND operation where one operand is false."
+    expression: ',(true, false)'
+    result: false
+  example2:
+    description: "Evaluation of an OR operation where one operand is true."
+    expression: ';(true, false)'
+    result: true
+  example3:
+    description: "Evaluation of a NOT operation on a true operand."
+    expression: '\\+(true)'
+    result: false
+
+tests:
+  test1:
+    description: "Test of an AND operation where one operand is false."
+    query: ',(true, false).'
+    expected: false
+  test2:
+    description: "Test of an OR operation where one operand is true."
+    query: ';(true, false).'
+    expected: true
+  test3:
+    description: "Test of a NOT operation on a true operand."
+    query: '\\+(true).'
+    expected: false
+
+interactive_examples:
+  Basic Operations:
+    module: shell
+    content: |
+  Prolog Lite - P1 Shell
+  Enter your Prolog queries or use built-in commands:
+  - Type

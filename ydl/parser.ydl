@@ -1,0 +1,30 @@
+name: parser
+description: "Parses boolean expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
+
+imports:
+  - constants
+  - operators
+
+functions:
+  parse:
+    description: "Takes an expression as a string and parses it into an internal format."
+    parameters: 
+      expression: 
+        type: string
+        description: "A boolean logic expression in string format."
+    return: 
+      type: internal_expression
+      description: "The parsed expression in an internal format."
+    body: |
+      Initialize an empty list for storing parsed elements (operators and operands).
+      For each character in the expression:
+          If character is a constant as defined in constants.ydl:
+              Add the constant to the list.
+          Else if character is an operator as defined in operators.ydl:
+              Initialize an empty tuple for the operator and its operands.
+              Add the operator to the tuple.
+              While the next character(s) are operands (constants):
+                  Add the operand(s) to the tuple.
+              End the tuple.
+              Add the tuple to the list.
+      Return the list as an internal expression.
