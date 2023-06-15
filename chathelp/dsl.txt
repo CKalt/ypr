@@ -1,5 +1,4 @@
-Please read the following 4 documents to understand the context of my request.
-I would like to add the notion of import and export between modules.  In both the *.ydl and Px.ypr files I wish the each module entity (e.g. functions) where there may be foreign references to other modules, I wish  for that foreign entity to show up in a nested object called imports: with a key value pair whereby each key is the module and the value being an array of all entities that must be imported. Conversly each such entity, (function etc.) must have an exported: true property added.
+I wish to refine the following plan and focus in on changing the ypr to clarify the idea of exported and imported functions and other elements between modules.
 
 -------------------
 
