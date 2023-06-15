@@ -1,4 +1,4 @@
-I wish to refine the following plan and focus in on changing the ypr to clarify the idea of exported and imported functions and other elements between modules.
+I wish to refine the following plan and focus in on changing the shell.ydl Modules to clarify the idea of exported and imported functions and provide a more clear definition of how it interacts with the other *.ydl's we shall be creating.
 
 -------------------
 
@@ -279,6 +279,7 @@ interactive_examples:
   - Type
 --------
 shell.ydl
+
 
 name: shell
 description: "Interactive shell for entering boolean expressions and getting their evaluated results."

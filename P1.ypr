@@ -126,12 +126,12 @@ modules:
   shell:
     description: "Interactive shell for entering boolean expressions and getting their evaluated results."
     ydl: ydl/shell.ydl
-    functions:
-      start_shell:
-        description: "Initializes and starts the interactive shell. No parameters or return values."
-        parameters: []
-        return: None
-        calls: [evaluator.evaluate]
+    exports: 
+      - start_shell
+      - load_file
+    imports:
+      - parser.parse
+      - evaluator.evaluate
     language-specific:
       rust: 
         'rust/src/shell.rs':
