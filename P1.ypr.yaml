@@ -100,6 +100,13 @@ modules:
       python: 
         'python/src/evaluator.py':
           class: Evaluator
+
+
+
+
+
+
+          
   parser:
     description: "Parses expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
     ydl: ydl/parser.ydl
