@@ -5,9 +5,6 @@ attributes:
   prompt:
     description: "Prompt string displayed for user input."
     value: "Prolog Lite - P1 Shell > "
-  exit_command:
-    description: "Command string to exit the shell."
-    value: 'exit.'
 
 exports:
   - start_shell
@@ -24,7 +21,7 @@ functions:
     return: None
     body: |
       Initialize the shell.
-      While user_input != exit_command:
+      While user_input != 'halt.':
           Display the prompt.
           Read user_input.
           If user_input is an expression:
@@ -48,13 +45,20 @@ functions:
           If line is an expression:
               ParsedLine = parser.parse(line)
               EvaluatedLine = evaluator.evaluate(ParsedLine)
-          Else if line is a command:
-              Execute the command.
-          Else:
-              Display an error message: "Invalid line in file. Line must be a boolean expression or a command."
-              
+  exit:
+    description: "Exits the interactive shell."
+    parameters: []
+    return: None
+    body: |
+      Perform any necessary cleanup tasks.
+      Terminate the shell.
+
 commands: 
   consult:
     description: "Loads a file with P1 facts."
     usage: 'consult("<filename>").'
     function: load_file
+  halt:
+    description: "Exits the interactive shell."
+    usage: 'halt.'
+    function: exit
