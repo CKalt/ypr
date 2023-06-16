@@ -1,41 +1,56 @@
 name: operators
-description: "Defines the boolean operators: AND, OR, NOT."
+description: "Defines the boolean operators: AND, OR, NOT, as in Prolog."
+
+exports: 
+  - and_operator
+  - or_operator
+  - not_operator
 
 operators:
   ',': 
-    description: "Logical AND operator. Returns true if both operands are true."
+    description: "Logical AND operator, represented as ',' in Prolog. Returns true if both operands are true."
     arity: 2
     function: 
       name: and_operator
       description: "Takes two boolean operands and returns their logical AND."
       parameters: 
-        operand1: boolean
-        operand2: boolean
+        operand1: 
+          type: boolean
+          description: "First boolean operand."
+        operand2: 
+          type: boolean
+          description: "Second boolean operand."
       return: 
         type: boolean
         description: "Result of the AND operation."
   
   ';': 
-    description: "Logical OR operator. Returns true if either operand is true."
+    description: "Logical OR operator, represented as ';' in Prolog. Returns true if either operand is true."
     arity: 2
     function: 
       name: or_operator
       description: "Takes two boolean operands and returns their logical OR."
       parameters: 
-        operand1: boolean
-        operand2: boolean
+        operand1: 
+          type: boolean
+          description: "First boolean operand."
+        operand2: 
+          type: boolean
+          description: "Second boolean operand."
       return: 
         type: boolean
         description: "Result of the OR operation."
 
   '\\+': 
-    description: "Logical NOT operator. Returns true if the operand is false, and vice versa."
+    description: "Logical NOT operator, represented as '\\+' in Prolog. Returns true if the operand is false, and vice versa."
     arity: 1
     function: 
       name: not_operator
       description: "Takes one boolean operand and returns its logical NOT."
       parameters: 
-        operand: boolean
+        operand: 
+          type: boolean
+          description: "Boolean operand."
       return: 
         type: boolean
         description: "Result of the NOT operation."

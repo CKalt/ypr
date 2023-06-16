@@ -5,6 +5,9 @@ imports:
   - constants
   - operators
 
+exports:
+  - parse
+
 functions:
   parse:
     description: "Takes an expression as a string and parses it into an internal format."

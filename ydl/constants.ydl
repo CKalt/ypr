@@ -1,6 +1,10 @@
 name: constants
 description: "Defines the boolean constants for the P1 language."
 
+exports: 
+  - true
+  - false
+
 constants:
   true: 
     description: "Boolean constant representing true."

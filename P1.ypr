@@ -101,12 +101,6 @@ modules:
         'python/src/evaluator.py':
           class: Evaluator
 
-
-
-
-
-
-          
   parser:
     description: "Parses expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
     ydl: ydl/parser.ydl
@@ -143,30 +137,42 @@ modules:
 examples:
   example1: 
     description: "Evaluation of an AND operation where one operand is false."
-    expression: ',(true, false)'
-    result: false
+    function_call: "evaluator.evaluate"
+    parameters: 
+        expression: ',(true, false)'
+    expected_result: false
   example2:
     description: "Evaluation of an OR operation where one operand is true."
-    expression: ';(true, false)'
-    result: true
+    function_call: "evaluator.evaluate"
+    parameters: 
+        expression: ';(true, false)'
+    expected_result: true
   example3:
     description: "Evaluation of a NOT operation on a true operand."
-    expression: '\\+(true)'
-    result: false
+    function_call: "evaluator.evaluate"
+    parameters: 
+        expression: '\\+(true)'
+    expected_result: false
 
 tests:
   test1:
     description: "Test of an AND operation where one operand is false."
-    query: ',(true, false).'
-    expected: false
+    function_call: "evaluator.evaluate"
+    parameters: 
+        expression: ',(true, false)'
+    expected_result: false
   test2:
     description: "Test of an OR operation where one operand is true."
-    query: ';(true, false).'
-    expected: true
+    function_call: "evaluator.evaluate"
+    parameters: 
+        expression: ';(true, false)'
+    expected_result: true
   test3:
     description: "Test of a NOT operation on a true operand."
-    query: '\\+(true).'
-    expected: false
+    function_call: "evaluator.evaluate"
+    parameters: 
+        expression: '\\+(true)'
+    expected_result: false
 
 interactive_examples:
   Basic Operations:
