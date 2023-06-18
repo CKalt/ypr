@@ -4,29 +4,28 @@ description: "BooleanLogic: A language that expresses and evaluates boolean logi
 structure:
   P1: 
     - P1.ypr
-    ydl:
-      - constants.ydl
-      - operators.ydl
-      - evaluator.ydl
-      - parser.ydl
-      - shell.ydl
-    rust:
-      - Cargo.toml
-      src:
-        - constants.rs
-        - operators.rs
-        - evaluator.rs
-        - parser.rs
-        - shell.rs
-    python:
-      - setup.py
-      src:
-        - constants.py
-        - operators.py
-        - evaluator.py
-        - parser.py
-        - shell.py
-
+    - ydl:
+        - constants.ydl
+        - operators.ydl
+        - evaluator.ydl
+        - parser.ydl
+        - shell.ydl
+      rust:
+        - Cargo.toml
+        - src:
+            - constants.rs
+            - operators.rs
+            - evaluator.rs
+            - parser.rs
+            - shell.rs
+      python:
+          - setup.py
+          - src:
+          - constants.py
+          - operators.py
+          - evaluator.py
+          - parser.py
+          - shell.py
 syntax:
   constants: [true, false]
   operators:
@@ -177,7 +176,6 @@ tests:
 interactive_examples:
   Basic Operations:
     module: shell
-    content: |
-  Prolog Lite - P1 Shell
+    content: "Prolog Lite - P1 Shell
   Enter your Prolog queries or use built-in commands:
-  - Type
+  - Type"

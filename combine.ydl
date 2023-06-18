@@ -1,0 +1,222 @@
+# constants.ydl ---------------------------------------------
+name: constants
+description: "Defines the boolean constants for the P1 language."
+
+exports: 
+  - true
+  - false
+
+constants:
+  true: 
+    description: "Boolean constant representing true."
+    value: true
+    type: boolean
+  
+  false:
+    description: "Boolean constant representing false."
+    value: false
+    type: boolean
+# evaluator.ydl ---------------------------------------------
+name: evaluator
+description: "Evaluates boolean expressions parsed into an internal format by the parser module."
+
+attributes: 
+  parser:
+    description: "Instance of the parser module for parsing expressions."
+    type: parser
+  operators:
+    description: "Instance of the operators module for performing operations."
+    type: operators
+
+functions:
+  evaluate:
+    description: "Takes an internal expression and evaluates it to return a boolean value."
+    parameters: 
+      expression: 
+        type: string
+        description: "A string representation of a boolean expression."
+    return: 
+      type: boolean
+      description: "The result of the evaluated boolean expression."
+    calls:
+      - parser.parse
+      - operators.and_operator
+      - operators.or_operator
+      - operators.not_operator
+    body: |
+      parsedExpression = parser.parse(expression)
+      For each tuple in the parsedExpression:
+          operator = tuple.operator
+          operands = tuple.operands
+          If operator is AND:
+              result = operators.and_operator(operands)
+          Else if operator is OR:
+              result = operators.or_operator(operands)
+          Else if operator is NOT:
+              result = operators.not_operator(operands)
+          Replace the tuple in parsedExpression with the result.
+      Return the final evaluated result (result of last operation).
+  initialize:
+    description: "Initializes the evaluator module by creating instances of the parser and operators modules."
+    parameters: []
+    return: None
+    calls: []
+    body: |
+      parser = Parser()
+      operators = Operators()
+# operators.ydl ---------------------------------------------
+name: operators
+description: "Defines the boolean operators: AND, OR, NOT, as in Prolog."
+
+exports: 
+  - and_operator
+  - or_operator
+  - not_operator
+
+operators:
+  ',': 
+    description: "Logical AND operator, represented as ',' in Prolog. Returns true if both operands are true."
+    arity: 2
+    function: 
+      name: and_operator
+      description: "Takes two boolean operands and returns their logical AND."
+      parameters: 
+        operand1: 
+          type: boolean
+          description: "First boolean operand."
+        operand2: 
+          type: boolean
+          description: "Second boolean operand."
+      return: 
+        type: boolean
+        description: "Result of the AND operation."
+  
+  ';': 
+    description: "Logical OR operator, represented as ';' in Prolog. Returns true if either operand is true."
+    arity: 2
+    function: 
+      name: or_operator
+      description: "Takes two boolean operands and returns their logical OR."
+      parameters: 
+        operand1: 
+          type: boolean
+          description: "First boolean operand."
+        operand2: 
+          type: boolean
+          description: "Second boolean operand."
+      return: 
+        type: boolean
+        description: "Result of the OR operation."
+
+  '\\+': 
+    description: "Logical NOT operator, represented as '\\+' in Prolog. Returns true if the operand is false, and vice versa."
+    arity: 1
+    function: 
+      name: not_operator
+      description: "Takes one boolean operand and returns its logical NOT."
+      parameters: 
+        operand: 
+          type: boolean
+          description: "Boolean operand."
+      return: 
+        type: boolean
+        description: "Result of the NOT operation."
+# parser.ydl ---------------------------------------------
+name: parser
+description: "Parses boolean expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
+
+imports:
+  - constants
+  - operators
+
+exports:
+  - parse
+
+functions:
+  parse:
+    description: "Takes an expression as a string and parses it into an internal format."
+    parameters: 
+      expression: 
+        type: string
+        description: "A boolean logic expression in string format."
+    return: 
+      type: internal_expression
+      description: "The parsed expression in an internal format."
+    body: |
+      Initialize an empty list for storing parsed elements (operators and operands).
+      For each character in the expression:
+          If character is a constant as defined in constants.ydl:
+              Add the constant to the list.
+          Else if character is an operator as defined in operators.ydl:
+              Initialize an empty tuple for the operator and its operands.
+              Add the operator to the tuple.
+              While the next character(s) are operands (constants):
+                  Add the operand(s) to the tuple.
+              End the tuple.
+              Add the tuple to the list.
+      Return the list as an internal expression.
+# shell.ydl ---------------------------------------------
+name: shell
+description: "Interactive shell for entering boolean expressions and getting their evaluated results."
+
+attributes: 
+  prompt:
+    description: "Prompt string displayed for user input."
+    value: "Prolog Lite - P1 Shell > "
+
+exports:
+  - start_shell
+  - load_file
+
+imports:
+  - parser.parse
+  - evaluator.evaluate
+
+functions:
+  start_shell:
+    description: "Initializes and starts the interactive shell. No parameters or return values."
+    parameters: []
+    return: None
+    body: |
+      Initialize the shell.
+      While user_input != 'halt.':
+          Display the prompt.
+          Read user_input.
+          If user_input is an expression:
+              ParsedExpression = parser.parse(user_input)
+              EvaluatedResult = evaluator.evaluate(ParsedExpression)
+              Display the EvaluatedResult.
+          Else if user_input is a command:
+              Execute the command.
+          Else:
+              Display an error message: "Invalid input. Please enter a boolean expression or a command."
+  load_file:
+    description: "Loads a file with P1 facts."
+    parameters: 
+      filename: 
+        type: string
+        description: "Name of the file to load."
+    return: None
+    body: |
+      Read the file.
+      For each line in the file:
+          If line is an expression:
+              ParsedLine = parser.parse(line)
+              EvaluatedLine = evaluator.evaluate(ParsedLine)
+  exit:
+    description: "Exits the interactive shell."
+    parameters: []
+    return: None
+    body: |
+      Perform any necessary cleanup tasks.
+      Terminate the shell.
+
+commands: 
+  consult:
+    description: "Loads a file with P1 facts."
+    usage: 'consult("<filename>").'
+    function: load_file
+  halt:
+    description: "Exits the interactive shell."
+    usage: 'halt.'
+    function: exit
