@@ -2,7 +2,7 @@ name: P1
 description: "BooleanLogic: A language that expresses and evaluates boolean logic"
 
 structure:
-  P1:
+  P1: 
     - P1.ypr
     ydl:
       - constants.ydl
