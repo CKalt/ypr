@@ -1,6 +1,5 @@
-# src/shell.py
-
-from parser import Parser
+# src/shell.py   
+from prolog_parser import Parser
 from evaluator import Evaluator
 
 class Interactive:
