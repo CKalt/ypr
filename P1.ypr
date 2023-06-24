@@ -19,13 +19,12 @@ structure:
             - parser.rs
             - shell.rs
       python:
-          - setup.py
           - src:
-          - constants.py
-          - operators.py
-          - evaluator.py
-          - parser.py
-          - shell.py
+            - constants.py
+            - operators.py
+            - evaluator.py
+            - parser.py
+            - shell.py
 syntax:
   constants: [true, false]
   operators:
