@@ -1,3 +1,7 @@
+Please read the following P1.ypr which specifies an implementation of a prolog lite langauge known as P1 to target either a rust or a python implementation.  It is important that all parts of the language compile and work in a full blown Prolog.
+
+If you can understand the set of modules I would like to discuss implementing the shell.py along with some examples that it will be able to perform that can be produced as tests.  What I mean by this is that shell.py should be able to work as a stand along module with unit tests to be integrated with the other parts.
+
 name: P1
 description: "BooleanLogic: A language that expresses and evaluates boolean logic"
 
@@ -175,20 +179,6 @@ tests:
 interactive_examples:
   Basic Operations:
     module: shell
-    content: 
-      - description: "Start the interactive shell and evaluate an AND operation."
-        command: "start_shell"
-        input: ",(true, false)"
-        expected_output: "false"
-      - description: "Evaluate an OR operation."
-        command: "start_shell"
-        input: ";(true, false)"
-        expected_output: "true"
-      - description: "Evaluate a NOT operation."
-        command: "start_shell"
-        input: "\\+(true)"
-        expected_output: "false"
-      - description: "Load expressions from a file and evaluate them."
-        command: "load_file 'expressions.txt'"
-        expected_output: "Results printed to the shell."
-
+    content: "Prolog Lite - P1 Shell
+  Enter your Prolog queries or use built-in commands:
+  - Type"
