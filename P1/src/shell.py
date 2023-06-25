@@ -1,11 +1,13 @@
 # src/shell.py   
 from prolog_parser import Parser
 from evaluator import Evaluator
+import sys
 
 class Interactive:
-    def __init__(self):
-        self.parser = Parser()
-        self.evaluator = Evaluator()
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+        self.parser = Parser(verbose)
+        self.evaluator = Evaluator(verbose)
 
     def start_shell(self):
         print("Prolog Lite - P1 Shell\nEnter your Prolog queries or use built-in commands:")
@@ -40,5 +42,6 @@ class Interactive:
             print(f"Failed to load file. Error: {str(e)}")
 
 if __name__ == "__main__":
-    shell = Interactive()
+    verbose = "-v" in sys.argv
+    shell = Interactive(verbose)
     shell.start_shell()

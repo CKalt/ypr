@@ -2,8 +2,13 @@
 
 # src/prolog_parser.py
 class Parser:
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+
     def parse(self, expr):
-        print(f"Parsing: {expr}")
+        if self.verbose:
+            print(f"Parsing: {expr}")
+            
         expr = expr.strip().replace(' ', '')
 
         if expr.endswith('.'):
@@ -15,7 +20,8 @@ class Parser:
         operator, rest = expr.split('(', 1)
         operator = operator.replace("'", "")  # Remove quotes from the operator
         rest = rest[:-1]
-        print(f"Operator: {operator}, Rest: {rest}")
+        if self.verbose:
+            print(f"Operator: {operator}, Rest: {rest}")
 
         operands = rest.split(',')
         if operator == '\\+':

@@ -1,11 +1,17 @@
 # src/evaluator.py
 
 class Evaluator:
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+
     def evaluate(self, expr):
-        print(f"Evaluating: {expr}")
+        if self.verbose:
+            print(f"Evaluating: {expr}")
+
         if isinstance(expr, tuple):
             operator, *operands = expr
-            print(f"Operator: {operator}, Operands: {operands}")
+            if self.verbose:
+                print(f"Operator: {operator}, Operands: {operands}")
             if operator == ',':
                 return self.evaluate(operands[0]) and self.evaluate(operands[1])
             elif operator == ';':
