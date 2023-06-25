@@ -2,9 +2,17 @@
 # src/evaluator.py
 
 class Evaluator:
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+
     def evaluate(self, expr):
+        if self.verbose:
+            print(f"Evaluating: {expr}")
+
         if isinstance(expr, tuple):
             operator, *operands = expr
+            if self.verbose:
+                print(f"Operator: {operator}, Operands: {operands}")
             if operator == ',':
                 return self.evaluate(operands[0]) and self.evaluate(operands[1])
             elif operator == ';':
@@ -22,8 +30,15 @@ class Evaluator:
 # src/prolog_parser.py ---------------------------------------------
 # src/prolog_parser.py
 
+# src/prolog_parser.py
 class Parser:
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+
     def parse(self, expr):
+        if self.verbose:
+            print(f"Parsing: {expr}")
+            
         expr = expr.strip().replace(' ', '')
 
         if expr.endswith('.'):
@@ -33,7 +48,10 @@ class Parser:
             expr = expr[1:-1]
 
         operator, rest = expr.split('(', 1)
+        operator = operator.replace("'", "")  # Remove quotes from the operator
         rest = rest[:-1]
+        if self.verbose:
+            print(f"Operator: {operator}, Rest: {rest}")
 
         operands = rest.split(',')
         if operator == '\\+':
@@ -47,13 +65,18 @@ class Parser:
                 parsed_operands.append(self.parse(operand))
 
         return (operator, *parsed_operands)
+
 # src/shell.py ---------------------------------------------
 # src/shell.py   
+from prolog_parser import Parser
+from evaluator import Evaluator
+import sys
 
 class Interactive:
-    def __init__(self):
-        self.parser = Parser()
-        self.evaluator = Evaluator()
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+        self.parser = Parser(verbose)
+        self.evaluator = Evaluator(verbose)
 
     def start_shell(self):
         print("Prolog Lite - P1 Shell\nEnter your Prolog queries or use built-in commands:")
@@ -88,5 +111,6 @@ class Interactive:
             print(f"Failed to load file. Error: {str(e)}")
 
 if __name__ == "__main__":
-    shell = Interactive()
+    verbose = "-v" in sys.argv
+    shell = Interactive(verbose)
     shell.start_shell()
