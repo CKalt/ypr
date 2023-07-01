@@ -1,10 +1,14 @@
 name: evaluator
 description: "Evaluates boolean expressions parsed into an internal format by the parser module."
 
+imports: 
+  - prolog_parser
+  - operators
+
 attributes: 
   parser:
     description: "Instance of the parser module for parsing expressions."
-    type: parser
+    type: prolog_parser
   operators:
     description: "Instance of the operators module for performing operations."
     type: operators
@@ -20,12 +24,12 @@ functions:
       type: boolean
       description: "The result of the evaluated boolean expression."
     calls:
-      - parser.parse
+      - prolog_parser.parse
       - operators.and_operator
       - operators.or_operator
       - operators.not_operator
     body: |
-      parsedExpression = parser.parse(expression)
+      parsedExpression = prolog_parser.parse(expression)
       For each tuple in the parsedExpression:
           operator = tuple.operator
           operands = tuple.operands
@@ -43,5 +47,5 @@ functions:
     return: None
     calls: []
     body: |
-      parser = Parser()
-      operators = Operators()
+      parser = prolog_parser.Parser()
+      operators = operators.Operators()

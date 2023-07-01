@@ -6,13 +6,24 @@ attributes:
     description: "Prompt string displayed for user input."
     value: "Prolog Lite - P1 Shell > "
 
-exports:
-  - start_shell
-  - load_file
+exports: 
+  - start_shell:
+      parameters: []
+      return: None
+  - load_file:
+      parameters: {filename: string}
+      return: None
+  - Interactive:
+      class_definition: {}
+      instances: {}
 
 imports:
-  - parser.parse
-  - evaluator.evaluate
+  - parser.parse: 
+      parameters: {expression: string}
+      return: internal_expression
+  - evaluator.evaluate:
+      parameters: {expression: string}
+      return: boolean
 
 functions:
   start_shell:

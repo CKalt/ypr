@@ -1,0 +1,47 @@
+name: constants
+description: "Defines the boolean constants and the Prolog symbols for the P1 language."
+
+exports: 
+  - true
+  - false
+  - and_symbol
+  - or_symbol
+  - not_symbol
+  - left_paren
+  - right_paren
+
+constants:
+  true: 
+    description: "Boolean constant representing true."
+    value: true
+    type: boolean
+  
+  false:
+    description: "Boolean constant representing false."
+    value: false
+    type: boolean
+
+  and_symbol:
+    description: "Prolog symbol for AND operator."
+    value: ","
+    type: string
+
+  or_symbol:
+    description: "Prolog symbol for OR operator."
+    value: ";"
+    type: string
+
+  not_symbol:
+    description: "Prolog symbol for NOT operator."
+    value: "\\+"
+    type: string
+
+  left_paren:
+    description: "Left parenthesis for grouping expressions."
+    value: "("
+    type: string
+
+  right_paren:
+    description: "Right parenthesis for grouping expressions."
+    value: ")"
+    type: string

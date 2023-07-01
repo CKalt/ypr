@@ -2,15 +2,17 @@ name: parser
 description: "Parses boolean expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
 
 imports:
-  - constants
-  - operators
+  - constants.values
+  - operators.and_operator
+  - operators.or_operator
+  - operators.not_operator
 
 exports:
   - parse
 
 functions:
   parse:
-    description: "Takes an expression as a string and parses it into an internal format."
+    description: "Takes a boolean logic expression as a string and parses it into an internal format."
     parameters: 
       expression: 
         type: string
@@ -21,9 +23,9 @@ functions:
     body: |
       Initialize an empty list for storing parsed elements (operators and operands).
       For each character in the expression:
-          If character is a constant as defined in constants.ydl:
+          If character is a constant as defined in constants.values:
               Add the constant to the list.
-          Else if character is an operator as defined in operators.ydl:
+          Else if character is an operator as defined in operators.{and_operator, or_operator, not_operator}:
               Initialize an empty tuple for the operator and its operands.
               Add the operator to the tuple.
               While the next character(s) are operands (constants):

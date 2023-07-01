@@ -1,0 +1,16 @@
+operators:
+    description: "Implements the boolean operators: AND, OR, and NOT."
+    exports: 
+      - and_operator: 
+          parameters: {operand1: boolean, operand2: boolean}
+          return: boolean
+      - or_operator: 
+          parameters: {operand1: boolean, operand2: boolean}
+          return: boolean
+      - not_operator: 
+          parameters: {operand: boolean}
+          return: boolean
+      - Operators: 
+          class_definition: {}
+          instances: {}
+    imports: []

@@ -1,0 +1,107 @@
+name: P1
+description: "BooleanLogic: A language that expresses and evaluates boolean logic"
+
+structure:
+  P1: 
+    - P1.ypr
+    - ydl:
+        - constants.ydl
+        - operators.ydl
+        - evaluator.ydl
+        - parser.ydl
+        - shell.ydl
+    - rust:
+        - Cargo.toml
+        - src:
+            - constants.rs
+            - operators.rs
+            - evaluator.rs
+            - parser.rs
+            - shell.rs
+    - python:
+        - src:
+            - constants.py
+            - operators.py
+            - evaluator.py
+            - parser.py
+            - shell.py
+
+modules:
+  constants:
+    description: "Defines the boolean constants true and false."
+    exports: 
+      - values: 
+          parameters: []
+          return: array or list of boolean (depending on the language)
+      - Constants: 
+          class_definition: {}
+          instances: {}
+    imports: []
+
+  operators:
+    description: "Implements the boolean operators: AND, OR, and NOT."
+    exports: 
+      - and_operator: 
+          parameters: {operand1: boolean, operand2: boolean}
+          return: boolean
+      - or_operator: 
+          parameters: {operand1: boolean, operand2: boolean}
+          return: boolean
+      - not_operator: 
+          parameters: {operand: boolean}
+          return: boolean
+      - Operators: 
+          class_definition: {}
+          instances: {}
+    imports: []
+
+  evaluator:
+    description: "Evaluates boolean expressions parsed into an internal format."
+    exports: 
+      - evaluate: 
+          parameters: {expression: internal_expression}
+          return: boolean
+    imports: 
+      - parser.parse: 
+          parameters: {expression: string}
+          return: internal_expression
+      - operators.and_operator: 
+          parameters: {operand1: boolean, operand2: boolean}
+          return: boolean
+      - operators.or_operator: 
+          parameters: {operand1: boolean, operand2: boolean}
+          return: boolean
+      - operators.not_operator: 
+          parameters: {operand: boolean}
+          return: boolean
+
+  parser:
+    description: "Parses expressions into an internal format for evaluation."
+    exports: 
+      - parse: 
+          parameters: {expression: string}
+          return: internal_expression
+      - Parser: 
+          class_definition: {}
+          instances: {}
+    imports: []
+
+  shell:
+    description: "Interactive shell for entering boolean expressions and getting their evaluated results."
+    exports: 
+      - start_shell: 
+          parameters: []
+          return: None
+      - load_file: 
+          parameters: {filename: string}
+          return: None
+      - Interactive: 
+          class_definition: {}
+          instances: {}
+    imports: 
+      - parser.parse: 
+          parameters: {expression: string}
+          return: internal_expression
+      - evaluator.evaluate: 
+          parameters: {expression: string}
+          return: boolean
