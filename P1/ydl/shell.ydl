@@ -35,14 +35,15 @@ functions:
       While user_input != 'halt.':
           Display the prompt.
           Read user_input.
-          If user_input is an expression:
-              ParsedExpression = parser.parse(user_input)
-              EvaluatedResult = evaluator.evaluate(ParsedExpression)
-              Display the EvaluatedResult.
-          Else if user_input is a command:
-              Execute the command.
-          Else:
-              Display an error message: "Invalid input. Please enter a boolean expression or a command."
+          Try:
+              If user_input is an expression:
+                  ParsedExpression = parser.parse(user_input)
+                  EvaluatedResult = evaluator.evaluate(ParsedExpression)
+                  Display the EvaluatedResult.
+              Else if user_input is a command:
+                  Execute the command.
+          Except:
+              Display an error message: "Error in input or processing. Please enter a valid boolean expression or a command."
   load_file:
     description: "Loads a file with P1 facts."
     parameters: 

@@ -30,16 +30,23 @@ functions:
       - operators.not_operator
     body: |
       parsedExpression = prolog_parser.parse(expression)
-      For each tuple in the parsedExpression:
-          operator = tuple.operator
-          operands = tuple.operands
-          If operator is AND:
-              result = operators.and_operator(operands)
-          Else if operator is OR:
-              result = operators.or_operator(operands)
-          Else if operator is NOT:
-              result = operators.not_operator(operands)
-          Replace the tuple in parsedExpression with the result.
+      While parsedExpression contains tuples:
+          For each tuple in the parsedExpression:
+              operator = tuple.operator
+              operands = tuple.operands
+              If operands contain tuple:
+                  For each operand in operands:
+                      If operand is a tuple:
+                          result = evaluate(operand)
+                          Replace operand in tuple with the result.
+              Else:
+                  If operator is AND:
+                      result = operators.and_operator(operands)
+                  Else if operator is OR:
+                      result = operators.or_operator(operands)
+                  Else if operator is NOT:
+                      result = operators.not_operator(operands)
+              Replace the tuple in parsedExpression with the result.
       Return the final evaluated result (result of last operation).
   initialize:
     description: "Initializes the evaluator module by creating instances of the parser and operators modules."

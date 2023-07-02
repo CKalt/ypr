@@ -1,46 +1,48 @@
-# src/shell.py   
-from prolog_parser import Parser
+from parser import Parser
 from evaluator import Evaluator
-import sys
 
 class Interactive:
-    def __init__(self, verbose=False):
-        self.verbose = verbose
-        self.parser = Parser(verbose)
-        self.evaluator = Evaluator(verbose)
+    def __init__(self):
+        self.parser = Parser()
+        self.evaluator = Evaluator()
+        self.prompt = "Prolog Lite - P1 Shell > "
 
     def start_shell(self):
-        print("Prolog Lite - P1 Shell")
         while True:
-            command = input("> ")
-            if command == 'halt.':
-                break
-            self.handle_command(command)
+            user_input = input(self.prompt)
+            if user_input == 'halt.':
+                self.exit()
+            elif user_input.startswith('consult('):
+                filename = user_input.replace('consult(', '').replace(').', '')
+                self.load_file(filename)
+            elif len(user_input) > 0:
+                self.process_expression(user_input)
+            else:
+                print("Invalid input. Please enter a boolean expression or a command.")
 
-    def handle_command(self, command):
-        if command.startswith('consult('):
-            filename = command[len('consult('):-2]
-            self.consult(filename)
-        else:
-            self.evaluate_expression(command)
-
-    def evaluate_expression(self, expr):
+    def load_file(self, filename):
         try:
-            parsed_expr = self.parser.parse(expr)
-            result = self.evaluator.evaluate(parsed_expr)
-            print(result)
-        except Exception as e:
-            print(f"Failed to evaluate expression. Error: {str(e)}")
+            with open(filename, 'r') as file:
+                for line in file.readlines():
+                    self.process_expression(line.strip())
+        except FileNotFoundError:
+            print(f"File '{filename}' not found.")
 
-    def consult(self, filename):
-        try:
-            with open(filename, 'r') as f:
-                for line in f:
-                    self.evaluate_expression(line.strip())
-        except Exception as e:
-            print(f"Failed to consult file. Error: {str(e)}")
+    def process_expression(self, expression):
+        parsed_expression = self.parser.parse(expression)
+        evaluated_result = self.evaluator.evaluate(parsed_expression)
+        print(evaluated_result)
 
-if __name__ == "__main__":
-    verbose = "-v" in sys.argv
-    shell = Interactive(verbose)
+    def exit(self):
+        print("Terminating the shell.")
+        exit(0)
+
+
+def start_shell():
+    shell = Interactive()
     shell.start_shell()
+
+
+def load_file(filename):
+    shell = Interactive()
+    shell.load_file(filename)

@@ -2,10 +2,8 @@ name: parser
 description: "Parses boolean expressions into an internal format for evaluation. The internal format is a list of tuples, where each tuple contains an operator and its operands."
 
 imports:
-  - constants.values
-  - operators.and_operator
-  - operators.or_operator
-  - operators.not_operator
+  - constants
+  - operators
 
 exports:
   - parse
@@ -21,13 +19,15 @@ functions:
       type: internal_expression
       description: "The parsed expression in an internal format."
     body: |
+      Initialize a dictionary, symbol_to_operator, mapping operator symbols to their function names in the operators module.
       Initialize an empty list for storing parsed elements (operators and operands).
       For each character in the expression:
           If character is a constant as defined in constants.values:
               Add the constant to the list.
-          Else if character is an operator as defined in operators.{and_operator, or_operator, not_operator}:
+          Else if character is an operator as defined in symbol_to_operator:
               Initialize an empty tuple for the operator and its operands.
-              Add the operator to the tuple.
+              Convert the operator symbol to the operator function name using symbol_to_operator.
+              Add the operator function name to the tuple.
               While the next character(s) are operands (constants):
                   Add the operand(s) to the tuple.
               End the tuple.

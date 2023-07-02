@@ -1,38 +1,29 @@
-# src/prolog_parser.py
+from constants import Constants
+from operators import Operators
 
-# src/prolog_parser.py
 class Parser:
-    def __init__(self, verbose=False):
-        self.verbose = verbose
+    def __init__(self):
+        self.constants = Constants().values
+        self.operators = Operators()
 
-    def parse(self, expr):
-        if self.verbose:
-            print(f"Parsing: {expr}")
-            
-        expr = expr.strip().replace(' ', '')
-
-        if expr.endswith('.'):
-            expr = expr[:-1]
-
-        if expr[0] == '(' and expr[-1] == ')':
-            expr = expr[1:-1]
-
-        operator, rest = expr.split('(', 1)
-        operator = operator.replace("'", "")  # Remove quotes from the operator
-        rest = rest[:-1]
-        if self.verbose:
-            print(f"Operator: {operator}, Rest: {rest}")
-
-        operands = rest.split(',')
-        if operator == '\\+':
-            operands = [operands[0]]
-
-        parsed_operands = []
-        for operand in operands:
-            if operand in ('true', 'false'):
-                parsed_operands.append(operand)
+    def parse(self, expression):
+        parsed_expression = []
+        index = 0
+        while index < len(expression):
+            char = expression[index]
+            if char in self.constants:
+                parsed_expression.append(self.constants[char])
+                index += 1
+            elif char in self.operators.keys():
+                operator = char
+                operands = []
+                index += 2  # Skip the "(" following the operator
+                while expression[index] != ")":
+                    if expression[index] in self.constants:
+                        operands.append(self.constants[expression[index]])
+                    index += 2  # Skip the comma and whitespace after each operand
+                index += 1  # Skip the ")" at the end of the tuple
+                parsed_expression.append((operator, *operands))
             else:
-                parsed_operands.append(self.parse(operand))
-
-        return (operator, *parsed_operands)
-
+                index += 1  # Skip over characters that are not constants or operators
+        return parsed_expression

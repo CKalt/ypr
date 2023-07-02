@@ -1,28 +1,23 @@
-# src/evaluator.py
+# evaluator.py
+from prolog_parser import Parser
+from operators import Operators
 
 class Evaluator:
-    def __init__(self, verbose=False):
-        self.verbose = verbose
+    def __init__(self):
+        self.parser = Parser()
+        self.operators = Operators()
 
-    def evaluate(self, expr):
-        if self.verbose:
-            print(f"Evaluating: {expr}")
-
-        if isinstance(expr, tuple):
-            operator, *operands = expr
-            if self.verbose:
-                print(f"Operator: {operator}, Operands: {operands}")
-            if operator == ',':
-                return self.evaluate(operands[0]) and self.evaluate(operands[1])
-            elif operator == ';':
-                return self.evaluate(operands[0]) or self.evaluate(operands[1])
-            elif operator == '\\+':
-                return not self.evaluate(operands[0])
-        else:
-            # Operand is a constant.
-            if expr == 'true':
-                return True
-            elif expr == 'false':
-                return False
-            else:
-                raise ValueError(f"Invalid constant: {expr}")
+    def evaluate(self, expression):
+        parsed_expression = self.parser.parse(expression)
+        for i in range(len(parsed_expression)):
+            element = parsed_expression[i]
+            if isinstance(element, tuple):
+                operator, *operands = element
+                if operator == self.parser.constants['and_symbol']['value']:
+                    result = self.operators.and_operator(*operands)
+                elif operator == self.parser.constants['or_symbol']['value']:
+                    result = self.operators.or_operator(*operands)
+                elif operator == self.parser.constants['not_symbol']['value']:
+                    result = self.operators.not_operator(*operands)
+                parsed_expression[i] = result
+        return parsed_expression[-1]['value']
